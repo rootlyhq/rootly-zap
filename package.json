@@ -1,0 +1,24 @@
+{
+  "name": "rootly",
+  "version": "1.0.0",
+  "description": "Rootly Zap.",
+  "repository": "rootlyhq/rootly-zap",
+  "homepage": "https://rootly.com",
+  "author": "Quentin Rousseau <support@rootly.com>",
+  "license": "BSD-3-Clause",
+  "main": "index.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha --recursive"
+  },
+  "engines": {
+    "node": "8.10.0",
+    "npm": ">=5.6.0"
+  },
+  "dependencies": {
+    "zapier-platform-core": "8.0.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "should": "^13.2.0"
+  }
+}
