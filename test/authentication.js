@@ -7,7 +7,7 @@ const App = require('../index');
 const appTester = zapier.createAppTester(App);
 
 
-describe('basic authentication', () => {
+describe('access token authentication', () => {
   // Put your test TEST_USERNAME and TEST_PASSWORD in a .env file.
   // The inject method will load them and make them available to use in your
   // tests.
@@ -16,14 +16,13 @@ describe('basic authentication', () => {
   it('should authenticate', (done) => {
     const bundle = {
       authData: {
-        username: process.env.TEST_USERNAME,
-        password: process.env.TEST_PASSWORD
+        api_key: process.env.TEST_API_KEY,
       }
     };
 
     appTester(App.authentication.test, bundle)
       .then((response) => {
-        should.exist(response.login);
+        should.exist(response.data.id);
         done();
       })
       .catch(done);

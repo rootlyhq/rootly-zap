@@ -1,7 +1,7 @@
 const repoTrigger = require('./triggers/repo');
 const issueCreate = require('./creates/issue');
 const issueTrigger = require('./triggers/issue');
-const authentication = require('./authentication');
+const { authentication, addApiKeyToHeader } = require('./authentication');
 
 const handleHTTPError = (response, z) => {
   if (response.status >= 400) {
@@ -16,10 +16,9 @@ const App = {
   version: require('./package.json').version,
   platformVersion: require('zapier-platform-core').version,
   authentication: authentication,
+  beforeRequest: addApiKeyToHeader,
 
-  // beforeRequest & afterResponse are optional hooks into the provided HTTP client
-  beforeRequest: [
-  ],
+  // afterResponse are optional hooks into the provided HTTP client
 
   afterResponse: [
     handleHTTPError

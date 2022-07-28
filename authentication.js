@@ -1,11 +1,25 @@
 'use strict';
 
 const authentication = {
-  type: 'basic',
+  type: 'custom',
+  // "test" could also be a function
   test: {
-    url: 'https://api.github.com/user'
+    url:
+      'https://rootly.ngrok.io/api/v1/users/me.json',
   },
-  connectionLabel: '{{bundle.authData.username}}'
+  fields: [
+    {
+      key: 'api_key',
+      type: 'string',
+      required: true,
+      helpText: 'Found on Manage Api Keys page.',
+    },
+  ],
 };
 
-module.exports = authentication;
+const addApiKeyToHeader = (request, z, bundle) => {
+  request.headers.Authorization = `Bearer ${bundle.authData.api_key}`;
+  return request;
+};
+
+module.exports = { authentication, addApiKeyToHeader };
