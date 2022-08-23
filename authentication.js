@@ -1,11 +1,10 @@
-'use strict';
+const config = require('./config');
 
 const authentication = {
   type: 'custom',
   // "test" could also be a function
   test: {
-    url:
-      'https://rootly.ngrok.io/api/v1/users/me.json',
+    url: `${config.API_URL}/v1/users/me.json`,
   },
   fields: [
     {

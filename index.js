@@ -1,6 +1,7 @@
-const repoTrigger = require('./triggers/repo');
-const issueCreate = require('./creates/issue');
-const issueTrigger = require('./triggers/issue');
+const reflectedCreate = require('./creates/reflected');
+const alertCreate = reflectedCreate("alert")
+const incidentCreate = reflectedCreate("incident")
+const pulseCreate = reflectedCreate("pulse")
 const { authentication, addApiKeyToHeader } = require('./authentication');
 
 const handleHTTPError = (response, z) => {
@@ -30,8 +31,6 @@ const App = {
 
   // If you want your trigger to show up, you better include it here!
   triggers: {
-    [repoTrigger.key]: repoTrigger,
-    [issueTrigger.key]: issueTrigger,
   },
 
   // If you want your searches to show up, you better include it here!
@@ -40,7 +39,9 @@ const App = {
 
   // If you want your creates to show up, you better include it here!
   creates: {
-    [issueCreate.key]: issueCreate,
+    [alertCreate.key]: alertCreate,
+    [incidentCreate.key]: incidentCreate,
+    [pulseCreate.key]: pulseCreate,
   }
 };
 

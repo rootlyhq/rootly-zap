@@ -7,26 +7,24 @@ const config = require('../config');
 const App = require('../index');
 const appTester = zapier.createAppTester(App);
 
-
-describe('access token authentication', () => {
-  // Put your test TEST_USERNAME and TEST_PASSWORD in a .env file.
-  // The inject method will load them and make them available to use in your
-  // tests.
+describe('create alert', () => {
   zapier.tools.env.inject();
 
-  it('should authenticate', (done) => {
+  it('should create an alert', (done) => {
     const bundle = {
       authData: {
-        api_key: config.API_KEY,
+				api_key: config.API_KEY
+      },
+      inputData: {
+        summary: 'Test Alert',
+        source: 'Test Source',
       }
     };
-
-    appTester(App.authentication.test, bundle)
+    appTester(App.creates.alert.operation.perform, bundle)
       .then((response) => {
-        should.exist(response.data.id);
+
         done();
       })
       .catch(done);
   });
-
 });
