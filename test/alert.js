@@ -13,7 +13,7 @@ describe('create alert', () => {
   it('should create an alert', (done) => {
     const bundle = {
       authData: {
-				api_key: config.API_KEY
+        api_key: config.API_KEY
       },
       inputData: {
         summary: 'Test Alert',

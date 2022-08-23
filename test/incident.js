@@ -13,7 +13,7 @@ describe('create incident', () => {
   it('should create an incident', (done) => {
     const bundle = {
       authData: {
-				api_key: config.API_KEY
+        api_key: config.API_KEY
       },
       inputData: {
         name: 'Test Incident',

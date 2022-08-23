@@ -13,7 +13,7 @@ describe('create pulse', () => {
   it('should create an pulse', (done) => {
     const bundle = {
       authData: {
-				api_key: config.API_KEY
+        api_key: config.API_KEY
       },
       inputData: {
         summary: 'Test Pulse',
