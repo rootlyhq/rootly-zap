@@ -47,7 +47,19 @@ function inputObjectArray(key, fieldSchema, requiredSchema) {
   }
 }
 
-module.exports = (name) => {
+function inputDynamicDropdown(key, fieldSchema, requiredSchema, dynamicRef) {
+  return {
+    key: key,
+    type: fieldSchema.type,
+    label: inflection.humanize(key),
+    description: fieldSchema.description,
+    required: requiredSchema.includes(key),
+    list: fieldSchema.type === "array",
+    dynamic: dynamicRef,
+  }
+}
+
+module.exports = (name, options = {}) => {
   const schema = swagger.components.schemas[`new_${name}`]
   const typeName = schema.properties.data.properties.type.enum[0];
   const fieldsSchema = schema.properties.data.properties.attributes.properties
@@ -56,6 +68,9 @@ module.exports = (name) => {
 
   const inputFields = Object.keys(fieldsSchema).map((key) => {
     const fieldSchema = fieldsSchema[key];
+    if (options.dynamic && options.dynamic[key]) {
+      return inputDynamicDropdown(key, fieldSchema, requiredSchema, options.dynamic[key]) 
+    }
     switch (fieldSchema.type) {
       case "string":
         return inputScalar(key, fieldSchema, requiredSchema);
@@ -95,18 +110,16 @@ module.exports = (name) => {
         return z.request({
           method: 'POST',
           url: `${config.API_URL}${apiPath}`,
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             data: {
               type: typeName,
               attributes: bundle.inputData,
             },
           })
-        }).then(res => JSON.parse(res.content));
+        }).then(res => JSON.parse(res.content).data);
       },
-      sample: swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example,
+      sample: swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data,
     }
   };
 }

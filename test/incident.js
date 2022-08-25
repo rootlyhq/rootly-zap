@@ -11,19 +11,35 @@ describe('create incident', () => {
   zapier.tools.env.inject();
 
   it('should create an incident', (done) => {
-    const bundle = {
+    appTester(App.triggers.severity.operation.perform, {
       authData: {
         api_key: config.API_KEY
       },
       inputData: {
-        name: 'Test Incident',
+        "filter[name]": "SEV1"
       }
-    };
-    appTester(App.creates.incident.operation.perform, bundle)
-      .then((response) => {
-
-        done();
-      })
-      .catch(done);
+    }).then((response) => {
+      const severity_id = response[0].id;
+      return appTester(App.triggers.service.operation.perform, {
+        authData: {
+          api_key: config.API_KEY
+        },
+        inputData: {
+          "filter[name]": ""
+        }
+      }).then((response) => {
+        const service_ids = response.map((item) => item.id);
+        appTester(App.creates.incident.operation.perform, {
+          authData: {
+            api_key: config.API_KEY
+          },
+          inputData: {
+            name: 'Test Incident',
+            severity_id: severity_id,
+            service_ids: service_ids,
+          }
+        }).then((response) => done()).catch(done);
+      });
+    });
   });
 });

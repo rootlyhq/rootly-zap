@@ -1,7 +1,7 @@
 const reflectedCreate = require('./creates/reflected');
-const alertCreate = reflectedCreate("alert")
-const incidentCreate = reflectedCreate("incident")
-const pulseCreate = reflectedCreate("pulse")
+const reflectedSearch = require('./searches/reflected');
+const reflectedTrigger = require('./triggers/reflected');
+
 const { authentication, addApiKeyToHeader } = require('./authentication');
 
 const handleHTTPError = (response, z) => {
@@ -31,17 +31,38 @@ const App = {
 
   // If you want your trigger to show up, you better include it here!
   triggers: {
+    alert: reflectedTrigger("alert"),
+    incident: reflectedTrigger("incident"),
+    pulse: reflectedTrigger("pulse"),
+
+    severity: reflectedTrigger("severity", { hidden: true }),
+    service: reflectedTrigger("service", { hidden: true }),
+    environment: reflectedTrigger("environment", { hidden: true }),
+    incident_type: reflectedTrigger("incident_type", { hidden: true }),
+    team: reflectedTrigger("team", { hidden: true }),
   },
 
   // If you want your searches to show up, you better include it here!
   searches: {
+    alert: reflectedSearch("alert"),
+    incident: reflectedSearch("incident"),
+    pulse: reflectedSearch("pulse"),
   },
 
   // If you want your creates to show up, you better include it here!
   creates: {
-    [alertCreate.key]: alertCreate,
-    [incidentCreate.key]: incidentCreate,
-    [pulseCreate.key]: pulseCreate,
+    alert: reflectedCreate("alert"),
+    incident: reflectedCreate("incident", {
+      dynamic: {
+        severity_id: "severity.id.attributes.name",
+        service_ids: "service.id.attributes.name",
+        environment_ids: "environment.id.attributes.name",
+        incident_type_ids: "incident_type.id.attributes.name",
+        functionality_ids: "functionality.id.attributes.name",
+        group_ids: "team.id.attributes.name",
+      }
+    }),
+    pulse: reflectedCreate("pulse"),
   }
 };
 

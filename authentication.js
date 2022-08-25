@@ -2,7 +2,7 @@ const config = require('./config');
 
 const authentication = {
   type: 'custom',
-  // "test" could also be a function
+  connectionLabel: "rootly: {{url}}",
   test: {
     url: `${config.API_URL}/v1/users/me.json`,
   },
@@ -11,7 +11,7 @@ const authentication = {
       key: 'api_key',
       type: 'string',
       required: true,
-      helpText: 'Found on Manage Api Keys page.',
+      helpText: 'Found on Manage Api Keys page: https://rootly.com/account/api-keys.',
     },
   ],
 };
