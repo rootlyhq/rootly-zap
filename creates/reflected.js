@@ -6,7 +6,7 @@ const { flattenJSONAPI } = require('../helpers')
 function inputScalar(key, fieldSchema, requiredSchema) {
   return {
     key: key,
-    type: fieldSchema.type,
+    type: key.match(/_at$/) ? 'datetime' : fieldSchema.type,
     label: inflection.humanize(key),
     required: requiredSchema.includes(key),
     choices: fieldSchema.enum,
