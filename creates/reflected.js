@@ -1,13 +1,13 @@
 const config = require('../config');
 const swagger = require('../swagger.json');
 const inflection = require('inflection');
+const { flattenJSONAPI } = require('../helpers')
 
 function inputScalar(key, fieldSchema, requiredSchema) {
   return {
     key: key,
     type: fieldSchema.type,
     label: inflection.humanize(key),
-    description: fieldSchema.description,
     required: requiredSchema.includes(key),
     choices: fieldSchema.enum,
   }
@@ -17,7 +17,6 @@ function inputDict(key, fieldSchema, requiredSchema) {
   return {
     key: key,
     label: inflection.humanize(key),
-    description: fieldSchema.description,
     required: requiredSchema.includes(key),
     dict: true,
   }
@@ -26,9 +25,8 @@ function inputDict(key, fieldSchema, requiredSchema) {
 function inputStringArray(key, fieldSchema, requiredSchema) {
   return {
     key: key,
-    type: fieldSchema.type,
+    type: "string",
     label: inflection.humanize(key),
-    description: fieldSchema.description,
     required: requiredSchema.includes(key),
     list: true,
   }
@@ -38,7 +36,6 @@ function inputObjectArray(key, fieldSchema, requiredSchema) {
   return {
     key: key,
     label: inflection.humanize(key),
-    description: fieldSchema.description,
     required: requiredSchema.includes(key),
     children: Object.keys(fieldSchema.items.properties).map((subKey) => {
       const subSchema = fieldSchema.items.properties[subKey]
@@ -50,9 +47,8 @@ function inputObjectArray(key, fieldSchema, requiredSchema) {
 function inputDynamicDropdown(key, fieldSchema, requiredSchema, dynamicRef) {
   return {
     key: key,
-    type: fieldSchema.type,
+    type: "string",
     label: inflection.humanize(key),
-    description: fieldSchema.description,
     required: requiredSchema.includes(key),
     list: fieldSchema.type === "array",
     dynamic: dynamicRef,
@@ -103,9 +99,7 @@ module.exports = (name, options = {}) => {
     },
 
     operation: {
-      inputFields: [
-        {key: 'name', label: 'Name', required: false},
-      ],
+      inputFields: inputFields,
       perform: (z, bundle) => {
         return z.request({
           method: 'POST',
@@ -117,9 +111,9 @@ module.exports = (name, options = {}) => {
               attributes: bundle.inputData,
             },
           })
-        }).then(res => JSON.parse(res.content).data);
+        }).then((response) => flattenJSONAPI(JSON.parse(response.content).data));
       },
-      sample: swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data,
+      sample: flattenJSONAPI(swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data),
     }
   };
 }

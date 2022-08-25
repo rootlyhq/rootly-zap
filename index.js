@@ -39,6 +39,7 @@ const App = {
     service: reflectedTrigger("service", { hidden: true }),
     environment: reflectedTrigger("environment", { hidden: true }),
     incident_type: reflectedTrigger("incident_type", { hidden: true }),
+    functionality: reflectedTrigger("functionality", { hidden: true }),
     team: reflectedTrigger("team", { hidden: true }),
   },
 
@@ -54,12 +55,12 @@ const App = {
     alert: reflectedCreate("alert"),
     incident: reflectedCreate("incident", {
       dynamic: {
-        severity_id: "severity.id.attributes.name",
-        service_ids: "service.id.attributes.name",
-        environment_ids: "environment.id.attributes.name",
-        incident_type_ids: "incident_type.id.attributes.name",
-        functionality_ids: "functionality.id.attributes.name",
-        group_ids: "team.id.attributes.name",
+        severity_id: "severity.id.name",
+        service_ids: "service.id.name",
+        environment_ids: "environment.id.name",
+        incident_type_ids: "incident_type.id.name",
+        functionality_ids: "functionality.id.name",
+        group_ids: "team.id.name",
       }
     }),
     pulse: reflectedCreate("pulse"),

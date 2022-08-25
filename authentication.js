@@ -2,7 +2,7 @@ const config = require('./config');
 
 const authentication = {
   type: 'custom',
-  connectionLabel: "rootly: {{url}}",
+  connectionLabel: "rootly",
   test: {
     url: `${config.API_URL}/v1/users/me.json`,
   },
