@@ -8,6 +8,7 @@
   "license": "BSD-3-Clause",
   "main": "index.js",
   "scripts": {
+    "update-swagger": "curl -L 'https://rootly.com/swagger/v1/swagger.json' > swagger.json",
     "test": "node node_modules/mocha/bin/mocha --recursive"
   },
   "engines": {
@@ -15,6 +16,7 @@
     "npm": ">=5.6.0"
   },
   "dependencies": {
+    "inflection": "^1.13.2",
     "zapier-platform-core": "8.0.1"
   },
   "devDependencies": {

@@ -1,18 +1,17 @@
-'use strict';
+const config = require('./config');
 
 const authentication = {
   type: 'custom',
-  // "test" could also be a function
+  connectionLabel: "rootly",
   test: {
-    url:
-      'https://rootly.ngrok.io/api/v1/users/me.json',
+    url: `${config.API_URL}/v1/users/me.json`,
   },
   fields: [
     {
       key: 'api_key',
       type: 'string',
       required: true,
-      helpText: 'Found on Manage Api Keys page.',
+      helpText: 'Found on Manage Api Keys page: https://rootly.com/account/api-keys.',
     },
   ],
 };
