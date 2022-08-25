@@ -8,7 +8,9 @@ module.exports = (name, options = {}) => {
   const typeName = schema.properties.data.items.properties.type.enum[0];
   const apiPath = `/v1/${inflection.pluralize(name)}`
 
-  const inputFields = swagger.paths[apiPath].get.parameters.map((paramSchema) => {
+  const inputFields = swagger.paths[apiPath].get.parameters.filter((paramSchema) => {
+    return paramSchema.name !== "page[size]" && paramSchema.name !== "page[number]"
+  }).map((paramSchema) => {
     return {
       key: paramSchema.name,
       label: paramSchema.name.replace("filter[", "").replace("]", ""),
@@ -33,7 +35,9 @@ module.exports = (name, options = {}) => {
           method: 'GET',
           url: `${config.API_URL}${apiPath}`,
           headers: { "Accept": "application/json" },
-          params: bundle.inputData,
+          params: Object.assign({}, bundle.inputData, {
+            "page[size]": 1
+          }),
         }).then((response) => JSON.parse(response.content).data.map(flattenJSONAPI));
       },
       sample: swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data,
