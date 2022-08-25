@@ -12,7 +12,7 @@ Instead of manually writing each create action, `./creates/reflected.js` exports
 
 For example, `require('./creates/reflected.js')('incident')` returns a create incident action by reflecting `.components.schemas.new_incident` in `./swagger.json`.
 
-To update the create actions just update `./swagger.json`.
+To update the create actions just update `./swagger.json` (you can run `npm run update-swagger`).
 
 ### See Also
 
