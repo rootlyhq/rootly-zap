@@ -5,7 +5,7 @@
   "repository": "rootlyhq/rootly-zap",
   "homepage": "https://rootly.com",
   "author": "Quentin Rousseau <support@rootly.com>",
-  "license": "BSD-3-Clause",
+  "license": "UNLICENSED",
   "main": "index.js",
   "scripts": {
     "validate": "zapier validate",
