@@ -1,7 +1,7 @@
 {
   "name": "rootly",
   "version": "0.0.2",
-  "description": "Rootly Zap.",
+  "description": "Rootly Zapier Integration",
   "repository": "rootlyhq/rootly-zap",
   "homepage": "https://rootly.com",
   "author": "Quentin Rousseau <support@rootly.com>",
