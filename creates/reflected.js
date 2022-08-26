@@ -3,58 +3,6 @@ const swagger = require('../swagger.json');
 const inflection = require('inflection');
 const { flattenJSONAPI } = require('../helpers')
 
-function inputScalar(key, fieldSchema, requiredSchema) {
-  return {
-    key: key,
-    type: key.match(/_at$/) ? 'datetime' : fieldSchema.type,
-    label: inflection.humanize(key),
-    required: requiredSchema.includes(key),
-    choices: fieldSchema.enum,
-  }
-}
-
-function inputDict(key, fieldSchema, requiredSchema) {
-  return {
-    key: key,
-    label: inflection.humanize(key),
-    required: false,
-    dict: true,
-  }
-}
-
-function inputStringArray(key, fieldSchema, requiredSchema) {
-  return {
-    key: key,
-    type: "string",
-    label: inflection.humanize(key),
-    required: requiredSchema.includes(key),
-    list: true,
-  }
-}
-
-function inputObjectArray(key, fieldSchema, requiredSchema) {
-  return {
-    key: key,
-    label: inflection.humanize(key),
-    required: requiredSchema.includes(key),
-    children: Object.keys(fieldSchema.items.properties).map((subKey) => {
-      const subSchema = fieldSchema.items.properties[subKey]
-      return inputScalar(subKey, subSchema, Object.keys(fieldSchema.items.properties))
-    })
-  }
-}
-
-function inputDynamicDropdown(key, fieldSchema, requiredSchema, dynamicRef) {
-  return {
-    key: key,
-    type: "string",
-    label: inflection.humanize(key),
-    required: requiredSchema.includes(key),
-    list: fieldSchema.type === "array",
-    dynamic: dynamicRef,
-  }
-}
-
 module.exports = (name, options = {}) => {
   const schema = swagger.components.schemas[`new_${name}`]
   const typeName = schema.properties.data.properties.type.enum[0];
@@ -116,4 +64,55 @@ module.exports = (name, options = {}) => {
       sample: flattenJSONAPI(swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data),
     }
   };
+}
+
+function inputScalar(key, fieldSchema, requiredSchema) {
+  return {
+    key: key,
+    type: key.match(/_at$/) ? 'datetime' : fieldSchema.type,
+    label: inflection.humanize(key),
+    required: requiredSchema.includes(key),
+    choices: fieldSchema.enum,
+  }
+}
+
+function inputDict(key, fieldSchema, requiredSchema) {
+  return {
+    key: key,
+    label: inflection.humanize(key),
+    required: requiredSchema.includes(key),
+    dict: true,
+  }
+}
+
+function inputStringArray(key, fieldSchema, requiredSchema) {
+  return {
+    key: key,
+    type: "string",
+    label: inflection.humanize(key),
+    required: requiredSchema.includes(key),
+    list: true,
+  }
+}
+
+function inputObjectArray(key, fieldSchema, requiredSchema) {
+  return {
+    key: key,
+    label: inflection.humanize(key),
+    children: Object.keys(fieldSchema.items.properties).map((subKey) => {
+      const subSchema = fieldSchema.items.properties[subKey]
+      return inputScalar(subKey, subSchema, Object.keys(fieldSchema.items.properties))
+    })
+  }
+}
+
+function inputDynamicDropdown(key, fieldSchema, requiredSchema, dynamicRef) {
+  return {
+    key: key,
+    type: "string",
+    label: inflection.humanize(key),
+    required: requiredSchema.includes(key),
+    list: fieldSchema.type === "array",
+    dynamic: dynamicRef,
+  }
 }
