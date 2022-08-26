@@ -2,7 +2,9 @@ const config = require('./config');
 
 const authentication = {
   type: 'custom',
-  connectionLabel: "rootly",
+  connectionLabel: (z, bundle) => {
+    return bundle.inputData.data.attributes.full_name_with_team;
+  },
   test: {
     url: `${config.API_URL}/v1/users/me.json`,
   },
