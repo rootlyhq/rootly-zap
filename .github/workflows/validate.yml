@@ -16,4 +16,5 @@ jobs:
           node-version: 16
       - run: npm install
       - run: echo '{"deployKey":"${{secrets.ZAPIER_DEPLOY_KEY}}"}' > "$HOME/.zapierrc"
+      - run: npm test
       - run: npm run validate
