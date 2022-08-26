@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  publish:
+  validate:
     runs-on: ubuntu-latest
     env:
       ROOTLY_API_KEY: ${{ secrets.ROOTLY_API_KEY }}
