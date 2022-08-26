@@ -89,9 +89,9 @@ const inputObjectSchema = exports.inputObjectSchema = (key, fieldSchema, require
 const inputObjectArraySchema = exports.inputObjectArraySchema = (key, fieldSchema, requiredSchema) => {
   // array of { id: "foo", name: "foo" } we flatten to list of ids and unflatten by setting name to id
   if (fieldSchema.items.properties.id) {
-    return inputDictSchema(key, fieldSchema, requiredSchema);
-  } else if (fieldSchema.items.properties.key) {
     return inputStringArraySchema(key, fieldSchema, requiredSchema);
+  } else if (fieldSchema.items.properties.key) {
+    return inputDictSchema(key, fieldSchema, requiredSchema);
   } else {
     throw new Error("unsupported list of map schema");
   }
