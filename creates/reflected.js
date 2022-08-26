@@ -17,7 +17,7 @@ function inputDict(key, fieldSchema, requiredSchema) {
   return {
     key: key,
     label: inflection.humanize(key),
-    required: requiredSchema.includes(key),
+    required: false,
     dict: true,
   }
 }
