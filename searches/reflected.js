@@ -1,10 +1,11 @@
 const config = require('../config');
 const swagger = require('../swagger.json');
 const inflection = require('inflection');
-const { flattenJSONAPI } = require('../helpers')
+const { flattenResponseItem } = require('../helpers')
 
 module.exports = (name, options = {}) => {
   const schema = swagger.components.schemas[`${name}_list`]
+  const fieldsSchema = swagger.components.schemas[`new_${name}`].properties.data.properties.attributes.properties
   const typeName = schema.properties.data.items.properties.type.enum[0];
   const apiPath = `/v1/${inflection.pluralize(name)}`
 
@@ -38,9 +39,9 @@ module.exports = (name, options = {}) => {
           params: Object.assign({}, bundle.inputData, {
             "page[size]": 1
           }),
-        }).then((response) => JSON.parse(response.content).data.map(flattenJSONAPI));
+        }).then((response) => JSON.parse(response.content).data.map((item) => flattenResponseItem(fieldsSchema, item)));
       },
-      sample: swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data,
+      sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data),
     }
   };
 }
