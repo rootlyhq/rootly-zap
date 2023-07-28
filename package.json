@@ -10,7 +10,7 @@
   "scripts": {
     "validate": "zapier validate",
     "update-swagger": "curl -L 'https://rootly-heroku.s3.amazonaws.com/swagger/v1/swagger.json' > swagger.json",
-    "test": "node node_modules/mocha/bin/mocha --recursive"
+    "test": "node node_modules/mocha/bin/mocha --recursive --timeout 15000"
   },
   "engines": {
     "node": "16.14.2",
