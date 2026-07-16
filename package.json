@@ -17,7 +17,7 @@
     "npm": ">=5.6.0"
   },
   "dependencies": {
-    "inflection": "^2.0.1",
+    "inflection": "^3.0.2",
     "zapier-platform-core": "19.0.0"
   },
   "devDependencies": {
