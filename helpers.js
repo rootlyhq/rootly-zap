@@ -93,7 +93,7 @@ const inputObjectArraySchema = exports.inputObjectArraySchema = (key, fieldSchem
   } else if (fieldSchema.items.properties.key) {
     return inputDictSchema(key, fieldSchema, requiredSchema);
   } else {
-    throw new Error("unsupported list of map schema");
+    return null;
   }
 }
 
@@ -116,8 +116,39 @@ const unflattenObjectArrayInput = exports.unflattenObjectArrayInput = (inputItem
   } else if (fieldSchema.items.properties.key) {
     return Object.keys(inputItem).map((key) => ({ key: key, value: inputItem[key] }));
   } else {
-    throw new Error("unsupported list of map schema");
+    return inputItem;
   }
+}
+
+const generateSampleValue = (fieldSchema) => {
+  switch (fieldSchema.type) {
+    case "string":
+      return fieldSchema.enum ? fieldSchema.enum[0] : "string";
+    case "boolean":
+      return true;
+    case "number":
+    case "integer":
+      return 1;
+    case "array":
+      if (fieldSchema.items && fieldSchema.items.type === "object" && fieldSchema.items.properties) {
+        if (fieldSchema.items.properties.id) return [{ id: "1", name: "example" }];
+        if (fieldSchema.items.properties.key) return [{ key: "key", value: "value" }];
+        return [];
+      }
+      return [];
+    case "object":
+      return {};
+    default:
+      return null;
+  }
+}
+
+const generateSample = exports.generateSample = (fieldsSchema) => {
+  const attributes = {};
+  Object.keys(fieldsSchema).forEach((key) => {
+    attributes[key] = generateSampleValue(fieldsSchema[key]);
+  });
+  return { id: "1", attributes: attributes };
 }
 
 const flattenResponseItem = exports.flattenResponseItem = (fieldsSchema, jsonApiItem) => {
@@ -134,8 +165,6 @@ const flattenResponseItem = exports.flattenResponseItem = (fieldsSchema, jsonApi
             b[pair.key] = pair.value;
             return b;
           }, {})
-        } else {
-          throw new Error("unsupported list of map schema");
         }
       } else {
         flattened[key] = item[key];
