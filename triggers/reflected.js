@@ -27,7 +27,7 @@ module.exports = (name, options = {}) => {
           url: `${config.API_URL}${apiPath}`,
           headers: { "Accept": "application/json" },
           params: bundle.inputData,
-        }).then((response) => JSON.parse(response.content).data.map((item) => flattenResponseItem(fieldsSchema, item)));
+        }).then((response) => response.data.data.map((item) => flattenResponseItem(fieldsSchema, item)));
       },
       sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example?.data || generateSample(fieldsSchema)),
     }

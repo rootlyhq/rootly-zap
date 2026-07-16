@@ -34,7 +34,7 @@ module.exports = (name, options = {}) => {
               attributes: unflattenInputs(bundle.inputData, fieldsSchema),
             },
           })
-        }).then((response) => flattenResponseItem(fieldsSchema, JSON.parse(response.content).data));
+        }).then((response) => flattenResponseItem(fieldsSchema, response.data.data));
       },
       sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example?.data || generateSample(fieldsSchema)),
     }
