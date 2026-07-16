@@ -1,5 +1,5 @@
 'use strict';
-const should = require('should');
+const assert = require('assert');
 
 const zapier = require('zapier-platform-core');
 
@@ -22,7 +22,7 @@ describe('create alert', () => {
     };
     appTester(App.creates.alert.operation.perform, bundle)
       .then((response) => {
-
+        assert.ok(response);
         done();
       })
       .catch(done);

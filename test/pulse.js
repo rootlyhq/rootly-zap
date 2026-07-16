@@ -1,5 +1,5 @@
 'use strict';
-const should = require('should');
+const assert = require('assert');
 
 const zapier = require('zapier-platform-core');
 
@@ -10,7 +10,7 @@ const appTester = zapier.createAppTester(App);
 describe('create pulse', () => {
   zapier.tools.env.inject();
 
-  it('should create an pulse', (done) => {
+  it('should create a pulse', (done) => {
     const bundle = {
       authData: {
         api_key: config.API_KEY
@@ -21,7 +21,7 @@ describe('create pulse', () => {
     };
     appTester(App.creates.pulse.operation.perform, bundle)
       .then((response) => {
-
+        assert.ok(response);
         done();
       })
       .catch(done);

@@ -1,6 +1,6 @@
 {
   "name": "rootly",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Rootly Zapier Integration",
   "repository": "rootlyhq/rootly-zap",
   "homepage": "https://rootly.com",
@@ -22,7 +22,6 @@
   },
   "devDependencies": {
     "mocha": "^11.7.6",
-    "should": "^13.2.3",
     "zapier-platform-cli": "^19.0.0"
   }
 }

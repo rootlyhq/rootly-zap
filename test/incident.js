@@ -1,5 +1,5 @@
 'use strict';
-const should = require('should');
+const assert = require('assert');
 
 const zapier = require('zapier-platform-core');
 
@@ -38,7 +38,10 @@ describe('create incident', () => {
             severity_id: severity_id,
             service_ids: service_ids,
           }
-        }).then((response) => done()).catch(done);
+        }).then((response) => {
+          assert.ok(response);
+          done();
+        }).catch(done);
       });
     });
   });
