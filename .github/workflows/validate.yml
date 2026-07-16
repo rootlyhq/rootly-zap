@@ -1,3 +1,5 @@
+name: Validate
+
 on:
   pull_request:
     branches:
@@ -12,10 +14,10 @@ jobs:
     env:
       ROOTLY_API_KEY: ${{ secrets.ROOTLY_API_KEY }}
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: 16
+          node-version: 22
       - run: npm install
       - run: echo '{"deployKey":"${{secrets.ZAPIER_DEPLOY_KEY}}"}' > "$HOME/.zapierrc"
       - run: npm test
