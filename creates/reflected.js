@@ -28,12 +28,12 @@ module.exports = (name, options = {}) => {
           method: 'POST',
           url: `${config.API_URL}${apiPath}`,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+          body: {
             data: {
               type: typeName,
               attributes: unflattenInputs(bundle.inputData, fieldsSchema),
             },
-          })
+          }
         }).then((response) => flattenResponseItem(fieldsSchema, response.data.data));
       },
       sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example?.data || generateSample(fieldsSchema)),
