@@ -1,7 +1,7 @@
 const config = require('../config');
 const swagger = require('../swagger.json');
 const inflection = require('inflection');
-const { inputSchema, unflattenInputs, flattenResponseItem } = require('../helpers')
+const { inputSchema, unflattenInputs, flattenResponseItem, generateSample } = require('../helpers')
 
 module.exports = (name, options = {}) => {
   const schema = swagger.components.schemas[`new_${name}`]
@@ -28,15 +28,15 @@ module.exports = (name, options = {}) => {
           method: 'POST',
           url: `${config.API_URL}${apiPath}`,
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+          body: {
             data: {
               type: typeName,
               attributes: unflattenInputs(bundle.inputData, fieldsSchema),
             },
-          })
-        }).then((response) => flattenResponseItem(fieldsSchema, JSON.parse(response.content).data));
+          }
+        }).then((response) => flattenResponseItem(fieldsSchema, response.data.data));
       },
-      sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data),
+      sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example?.data || generateSample(fieldsSchema)),
     }
   };
 }

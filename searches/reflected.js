@@ -1,7 +1,7 @@
 const config = require('../config');
 const swagger = require('../swagger.json');
 const inflection = require('inflection');
-const { flattenResponseItem } = require('../helpers')
+const { flattenResponseItem, generateSample } = require('../helpers')
 
 module.exports = (name, options = {}) => {
   const schema = swagger.components.schemas[`${name}_list`]
@@ -39,9 +39,9 @@ module.exports = (name, options = {}) => {
           params: Object.assign({}, bundle.inputData, {
             "page[size]": 1
           }),
-        }).then((response) => JSON.parse(response.content).data.map((item) => flattenResponseItem(fieldsSchema, item)));
+        }).then((response) => response.data.data.map((item) => flattenResponseItem(fieldsSchema, item)));
       },
-      sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example.data),
+      sample: flattenResponseItem(fieldsSchema, swagger.paths[apiPath].post.responses["201"].content["application/vnd.api+json"].example?.data || generateSample(fieldsSchema)),
     }
   };
 }

@@ -1,28 +1,27 @@
 {
   "name": "rootly",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "description": "Rootly Zapier Integration",
   "repository": "rootlyhq/rootly-zap",
   "homepage": "https://rootly.com",
   "author": "Quentin Rousseau <support@rootly.com>",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "main": "index.js",
   "scripts": {
-    "validate": "zapier validate",
+    "validate": "zapier-platform validate",
     "update-swagger": "curl -L 'https://rootly-heroku.s3.amazonaws.com/swagger/v1/swagger.json' > swagger.json",
-    "test": "node node_modules/mocha/bin/mocha --recursive --timeout 15000"
+    "test": "mocha --recursive --timeout 15000"
   },
   "engines": {
-    "node": "16.14.2",
+    "node": ">=22",
     "npm": ">=5.6.0"
   },
   "dependencies": {
-    "inflection": "^2.0.1",
-    "zapier-platform-core": "15.0.1"
+    "inflection": "^3.0.2",
+    "zapier-platform-core": "19.0.0"
   },
   "devDependencies": {
-    "mocha": "^10.2.0",
-    "should": "^13.2.0",
-    "zapier-platform-cli": "^15.0.1"
+    "mocha": "^11.7.6",
+    "zapier-platform-cli": "^19.0.0"
   }
 }
