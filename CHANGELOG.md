@@ -1,3 +1,11 @@
+## 0.1.2
+
+* Update zapier-platform-core to 19.2.0
+* Run zapier-platform-cli via pinned npx instead of a dev dependency (clears dev-only advisories)
+* Disable dependency install scripts via .npmrc
+* Harden publish workflow (no expression injection, tag validation, validate before push)
+* Update mocha to 12.x; drop obsolete npm overrides
+
 ## 0.1.1
 
 * Fix security advisories via npm overrides

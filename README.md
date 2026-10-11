@@ -47,7 +47,16 @@ cp .env.example .env  # add your ROOTLY_API_KEY
 npm test              # Run tests
 npm run validate      # Zapier structural validation
 npm run update-swagger  # Pull latest swagger.json from Rootly
+npm run zapier -- <command>  # Any Zapier CLI command (pinned version via npx)
 ```
+
+The Zapier CLI isn't a dependency; scripts run a pinned version with `npx`. `.npmrc` sets `ignore-scripts=true`, so dependency install scripts never run.
+
+### Releasing
+
+1. Bump `version` in `package.json`, add a `CHANGELOG.md` entry, and merge to `master`.
+2. Tag the merge commit with the version (e.g. `0.1.2`) and push the tag.
+3. The `Publish` workflow validates, pushes the version to Zapier, promotes it, and creates a GitHub release.
 
 ### Adding a New Resource
 
