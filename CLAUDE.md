@@ -11,6 +11,7 @@ Rootly's Zapier integration. Zapier app ID: 167479. All triggers, searches, and 
 ```bash
 npm test                  # Run all tests (needs ROOTLY_API_KEY env var)
 npm run validate          # Zapier structural validation (needs ~/.zapierrc with deployKey)
+npm run zapier -- <cmd>   # Any Zapier CLI command (zapier-platform-cli pinned via npx, not a dependency)
 npm run update-swagger    # Pull latest swagger.json from Rootly S3
 npx mocha test/alert.js   # Run a single test file
 ```
@@ -45,6 +46,14 @@ Bearer token via `authentication.js`. User provides API key, added to `Authoriza
 ### Config
 
 `config.js` reads `ROOTLY_API_URL` (defaults to `https://api.rootly.com`) and `ROOTLY_API_KEY` from environment.
+
+## Supply chain
+
+`.npmrc` sets `ignore-scripts=true`. Keep `zapier-platform-cli` out of `package.json` (its tree carries unfixable advisories); bump the pinned version in the `validate`/`zapier` scripts alongside `zapier-platform-core` — versions must match.
+
+## Releasing
+
+Bump `package.json` version + `CHANGELOG.md`, merge, push a `X.Y.Z` tag. `.github/workflows/publish.yml` validates, `zapier push`, `zapier promote`, and creates the GitHub release.
 
 ## Style
 
